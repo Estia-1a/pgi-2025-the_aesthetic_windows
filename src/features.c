@@ -28,3 +28,17 @@ void dimension(char* filename) {
         free_image_data(data);
     }
 }
+void first_pixel(char *source_path) {
+    unsigned char *data;
+    int width, height, channels;
+
+    if (read_image_data(source_path, &data, &width, &height, &channels)) {
+        // Les 3 premiers éléments de data sont R, G, B
+        unsigned char r = data[0];
+        unsigned char g = data[1];
+        unsigned char b = data[2];
+        printf("first_pixel: %d, %d, %d\n", r, g, b);
+    } else {
+        fprintf(stderr, "Erreur lors de la lecture de l'image.\n");
+    }
+}
