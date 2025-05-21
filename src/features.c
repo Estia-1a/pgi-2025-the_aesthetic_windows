@@ -28,3 +28,25 @@ void dimension(char* filename) {
         free_image_data(data);
     }
 }
+
+void tenth_pixel (char *source_path) {
+    unsigned char*data;
+    int width, height, channel_count;
+
+    if (read_image_data(source_path, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", source_path);
+        return;
+    }
+
+    if (width < 10 ) {
+        printf("Image trop petite, largeur insuffisante (< 10 piexels).\n");
+        free_image_data(data);
+        return;
+    }
+    int index = 9 * channel_count;
+    int r = data[index];
+    int g = data[index + 1];
+    int b = data[index + 2];
+    printf("tenth_pixel: %d, %d, %d\n", r, g, b);
+    free_image_data(data);
+}
