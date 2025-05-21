@@ -28,12 +28,12 @@ void dimension(char* filename) {
         free_image_data(data);
     }
 }
-void first_pixel(char *source_path) {
+void first_pixel(char* filename) {
     unsigned char *data;
     int width, height, channels;
 
-    if (read_image_data(source_path, &data, &width, &height, &channels)) {
-        // Les 3 premiers éléments de data sont R, G, B
+    if (read_image_data(filename, &data, &width, &height, &channels)) {
+        
         unsigned char r = data[0];
         unsigned char g = data[1];
         unsigned char b = data[2];
