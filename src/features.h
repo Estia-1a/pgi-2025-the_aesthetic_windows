@@ -6,7 +6,8 @@ void helloWorld();
 
 void dimension(char* filename);
 
+void first_pixel(char* filename);
+
 void tenth_pixel (char *source_path);
 
-void first_pixel(char* filename);
 #endif
