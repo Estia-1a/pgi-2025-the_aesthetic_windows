@@ -49,4 +49,17 @@ void tenth_pixel (char *source_path) {
     int b = data[index + 2];
     printf("tenth_pixel: %d, %d, %d\n", r, g, b);
     free_image_data(data);
+void first_pixel(char* filename) {
+    unsigned char *data;
+    int width, height, channels;
+
+    if (read_image_data(filename, &data, &width, &height, &channels)) {
+        
+        unsigned char r = data[0];
+        unsigned char g = data[1];
+        unsigned char b = data[2];
+        printf("first_pixel: %d, %d, %d\n", r, g, b);
+    } else {
+        fprintf(stderr, "Erreur lors de la lecture de l'image.\n");
+    }
 }
