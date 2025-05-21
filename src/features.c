@@ -78,3 +78,9 @@ void second_line(char* filename) {
     printf("second_line: %d, %d, %d\n", r, g, b);
     free_image_data(data);
 }
+
+void run_feature(const char* feature, const char* filename, int x, int y) {
+    if (strcmp(feature, "print_pixel") == 0) {
+        print_pixel((char*)filename, x, y);
+    }
+}
