@@ -65,3 +65,9 @@ void tenth_pixel (char *source_path) {
     printf("tenth_pixel: %d, %d, %d\n", r, g, b);
     free_image_data(data);
 }
+
+void run_feature(const char* feature, const char* filename, int x, int y) {
+    if (strcmp(feature, "print_pixel") == 0) {
+        print_pixel((char*)filename, x, y);
+    }
+}

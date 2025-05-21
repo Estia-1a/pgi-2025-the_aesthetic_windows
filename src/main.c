@@ -38,7 +38,14 @@ int main(int argc, char **argv) {
   
     } else if ( strcmp( configuration.command, "tenth_pixel") == 0) {
     tenth_pixel(configuration.filenames[0]);
-  }
+    
+  } else if (strcmp(configuration.command, "print_pixel") == 0) {
+    int x = atoi(argv[6]);
+    int y = atoi(argv[7]);
+    print_pixel(configuration.filenames[0], x, y);
+}
+
+  
   /*
    * TO COMPLETE
    */
