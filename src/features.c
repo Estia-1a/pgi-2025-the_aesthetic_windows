@@ -24,7 +24,7 @@ void dimension(char* filename) {
     if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
         printf("Erreur avec le fichier : %s\n", filename);
     } else {
-        printf("Dimensions %s %dx%d\n", filename, width, height);
+        printf("dimension: %d, %d\n", width, height);
         free_image_data(data);
     }
 }
