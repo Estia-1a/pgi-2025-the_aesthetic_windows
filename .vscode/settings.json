@@ -11,7 +11,8 @@
         "cwd": "${workspaceFolder}"
     },
     "files.associations": {
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "estia-image.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled",
 }
