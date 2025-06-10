@@ -50,7 +50,6 @@ int main(int argc, char **argv) {
 
   } else if (strcmp(configuration.command, "max_pixel") == 0) {
     max_pixel(configuration.filenames[0]);
-<<<<<<< HEAD
   
   } else if (strcmp(configuration.command, "min_pixel") == 0) {
     min_pixel(configuration.filenames[0]);
@@ -70,10 +69,5 @@ int main(int argc, char **argv) {
 
 
 
-  return 0;
-=======
-    
-  } 
 return 0;
->>>>>>> cf2a4234bbe22ae6b822f74aca64c0fa174c603c
 }
