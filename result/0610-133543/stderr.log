@@ -1,0 +1,5 @@
+/home/runner/work/pgi-2025-the_aesthetic_windows/pgi-2025-the_aesthetic_windows/src/features.c: In function ‘color_red’:
+/home/runner/work/pgi-2025-the_aesthetic_windows/pgi-2025-the_aesthetic_windows/src/features.c:259:13: warning: implicit declaration of function ‘set_pixel’; did you mean ‘get_pixel’? [-Wimplicit-function-declaration]
+  259 |             set_pixel(data, width, channel_count, x, y, pixel);
+      |             ^~~~~~~~~
+      |             get_pixel
