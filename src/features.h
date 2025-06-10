@@ -16,6 +16,8 @@ void print_pixel(char* filename, int x, int y);
 
 void max_pixel(char* filename);
 
-void process_color_red(const char *input_filename);
+void keep_red_component(const unsigned char *input, unsigned char *output, int width, int height);
+void process_color_red(const char *filename);
+
 
 #endif

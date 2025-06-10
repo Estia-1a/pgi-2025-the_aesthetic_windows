@@ -141,28 +141,3 @@ void keep_red_component(const unsigned char *input, unsigned char *output, int w
         output[index + 2] = 0;              // B
     }
 }
-
-void process_color_red(const char *filename) {
-    unsigned char *input_data = NULL;
-    unsigned char *output_data = NULL;
-    int width = 0, height = 0;
-
-    if (read_image_data(filename, &input_data, &width, &height) != 0) {
-        fprintf(stderr, "Erreur de lecture de l'image.\n");
-        return;
-    }
-
-    output_data = malloc(width * height * 3);
-    if (!output_data) {
-        fprintf(stderr, "Erreur d'allocation mémoire.\n");
-        free(input_data);
-        return;
-    }
-
-    keep_red_component(input_data, output_data, width, height);
-
-    write_image_data("image_out.bmp", output_data, width, height);
-
-    free(input_data);
-    free(output_data);
-}
