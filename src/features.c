@@ -137,9 +137,9 @@ void keep_red_component(const unsigned char *input, unsigned char *output, int w
     int num_pixels = width * height;
     for (int i = 0; i < num_pixels; ++i) {
         int index = i * 3;
-        output[index] = input[index];       // R
-        output[index + 1] = 0;              // G
-        output[index + 2] = 0;              // B
+        output[index] = input[index];       
+        output[index + 1] = 0;             
+        output[index + 2] = 0;              
     }
 }
 
