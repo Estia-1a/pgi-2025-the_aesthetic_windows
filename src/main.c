@@ -56,7 +56,13 @@ int main(int argc, char **argv) {
   } else if (strcmp(configuration.command, "max_component") == 0) {
     char component = configuration.arguments[0][0];
     max_component(configuration.filenames[0], component);
+  
+  } else if (strcmp(configuration.command, "min_component") == 0) {
+    char component = configuration.arguments[0][0];
+    min_component(configuration.filenames[0], component);
+  
   }
+
 
 
 
