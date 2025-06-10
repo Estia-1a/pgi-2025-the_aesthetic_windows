@@ -330,3 +330,29 @@ void color_gray(char *filename) {
     free_image_data(data);
 }
 
+<<<<<<< HEAD
+=======
+void color_invert(char *filename) {
+    int width, height, channel_count;
+    unsigned char *data;
+    pixelRGB pixel;
+
+    read_image_data(filename, &data, &width, &height, &channel_count);
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            pixelRGB* pixel = get_pixel(data, width, height, channel_count, x, y);
+            
+            // Inverser chaque composante couleur : new_value = 255 - old_value
+            pixel->R = 255 - pixel->R;
+            pixel->G = 255 - pixel->G;
+            pixel->B = 255 - pixel->B;
+            
+            set_pixel(data, width, channel_count, x, y, *pixel);
+        }
+    }
+
+    int result = write_image_data("image_out.bmp", data, width, height);
+    free_image_data(data);
+}
+>>>>>>> b3ee5ac58051b59bef129ce3d85e615fdeea711d
