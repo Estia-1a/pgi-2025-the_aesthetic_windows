@@ -132,6 +132,7 @@ void max_pixel(char* filename) {
     free_image_data(data);
 }
 
+<<<<<<< HEAD
 void keep_red_component(const unsigned char *input, unsigned char *output, int width, int height) {
     int num_pixels = width * height;
     for (int i = 0; i < num_pixels; ++i) {
@@ -141,3 +142,70 @@ void keep_red_component(const unsigned char *input, unsigned char *output, int w
         output[index + 2] = 0;              // B
     }
 }
+=======
+void min_pixel(char* filename) {
+    unsigned char* data;
+    int width, height, channel_count;
+
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    int min_sum = 255 * 3 + 1;
+    int min_x = 0, min_y = 0;
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            pixelRGB* pixel = get_pixel(data, width, height, channel_count, x, y);
+            if (!pixel) continue;
+
+            int sum = pixel->R + pixel->G + pixel->B;
+            if (sum < min_sum) {
+                min_sum = sum;
+                min_x = x;
+                min_y = y;
+            }
+        }
+    }
+
+    pixelRGB* min_pixel = get_pixel(data, width, height, channel_count, min_x, min_y);
+    printf("min_pixel (%d, %d): %d, %d, %d\n", min_x, min_y, min_pixel->R, min_pixel->G, min_pixel->B);
+    free_image_data(data);
+}
+
+
+void max_component(char* filename, char component) {
+    unsigned char* data;
+    int width, height, channel_count;
+
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    int max_value = -1;
+    int max_x = 0, max_y = 0;
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            pixelRGB* pixel = get_pixel(data, width, height, channel_count, x, y);
+            if (!pixel) continue;
+
+            int value = 0;
+            if (component == 'R') value = pixel->R;
+            else if (component == 'G') value = pixel->G;
+            else if (component == 'B') value = pixel->B;
+
+            if (value > max_value) {
+                max_value = value;
+                max_x = x;
+                max_y = y;
+            }
+        }
+    }
+
+    printf("max_component %c (%d, %d): %d\n", component, max_x, max_y, max_value);
+    free_image_data(data);
+}
+>>>>>>> aebae97103631d1a7e7fe78a674d2a83f9c9a063
