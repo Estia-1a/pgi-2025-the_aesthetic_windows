@@ -329,3 +329,4 @@ void color_gray(char *filename) {
     int result = write_image_data("image_out.bmp", data, width, height);
     free_image_data(data);
 }
+
