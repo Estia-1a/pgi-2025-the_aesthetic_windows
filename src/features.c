@@ -247,7 +247,7 @@ void min_component(char* filename, char component) {
 void color_red(char* filename) {
     int width, height, channel_count;
     unsigned char *data;
-    pixelRGB pixel;
+    
    
     read_image_data(filename, &data, &width, &height, &channel_count);
  
@@ -259,7 +259,7 @@ void color_red(char* filename) {
             set_pixel(data, width, channel_count, x, y, pixel);
         }
     }
-    int result = write_image_data("image_out.bmp", data, width, height);
+   
     free_image_data(data);
 }
 
