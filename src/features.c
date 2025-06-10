@@ -244,7 +244,7 @@ void min_component(char* filename, char component) {
     free_image_data(data);
 }
 
-void color_red(char *filename) {
+void color_red(char* filename) {
     int width, height, channel_count;
     unsigned char *data;
     pixelRGB pixel;
@@ -263,7 +263,7 @@ void color_red(char *filename) {
     free_image_data(data);
 }
 
-void color_green(char *filename) {
+void color_green(char* filename) {
     int width, height, channel_count;
     unsigned char *data;
     pixelRGB pixel;
@@ -284,7 +284,7 @@ void color_green(char *filename) {
     free_image_data(data);
 }
 
-void color_blue(char *filename) {
+void color_blue(char* filename) {
     int width, height, channel_count;
     unsigned char *data;
     pixelRGB pixel;
