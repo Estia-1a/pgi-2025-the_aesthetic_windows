@@ -16,3 +16,11 @@ pixelRGB * get_pixel( unsigned char* data, const unsigned int width, const unsig
 
     return pixel;
 }
+
+void set_pixel(unsigned char* data, unsigned int width, unsigned int n, unsigned int x, unsigned int y, pixelRGB pixel) {
+    if (data == NULL || n < 3) return;
+    unsigned int i = (y * width + x) * n;
+    data[i] = pixel.R;
+    data[i + 1] = pixel.G;
+    data[i + 2] = pixel.B;
+}
