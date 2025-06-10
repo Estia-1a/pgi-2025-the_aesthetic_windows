@@ -208,4 +208,41 @@ void max_component(char* filename, char component) {
     printf("max_component %c (%d, %d): %d\n", component, max_x, max_y, max_value);
     free_image_data(data);
 }
+<<<<<<< HEAD
+
+void min_component(char* filename, char component) {
+    unsigned char* data;
+    int width, height, channel_count;
+
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    int min_value = 256;
+    int min_x = 0, min_y = 0;
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            pixelRGB* pixel = get_pixel(data, width, height, channel_count, x, y);
+            if (!pixel) continue;
+
+            int value = 0;
+            if (component == 'R') value = pixel->R;
+            else if (component == 'G') value = pixel->G;
+            else if (component == 'B') value = pixel->B;
+
+            if (value < min_value) {
+                min_value = value;
+                min_x = x;
+                min_y = y;
+            }
+        }
+    }
+
+    printf("min_component %c (%d, %d): %d\n", component, min_x, min_y, min_value);
+    free_image_data(data);
+}
+=======
 >>>>>>> aebae97103631d1a7e7fe78a674d2a83f9c9a063
+>>>>>>> cf2a4234bbe22ae6b822f74aca64c0fa174c603c
