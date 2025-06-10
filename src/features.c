@@ -1,6 +1,7 @@
 #include <estia-image.h>
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <string.h>
 #include "features.h"
 #include "utils.h"
 
@@ -129,4 +130,39 @@ void max_pixel(char* filename) {
 
     printf("max_pixel (%d, %d): %d, %d, %d\n", max_x, max_y, max_pixel.R, max_pixel.G, max_pixel.B);
     free_image_data(data);
+}
+
+void keep_red_component(const unsigned char *input, unsigned char *output, int width, int height) {
+    int num_pixels = width * height;
+    for (int i = 0; i < num_pixels; ++i) {
+        int index = i * 3;
+        output[index] = input[index];       // R
+        output[index + 1] = 0;              // G
+        output[index + 2] = 0;              // B
+    }
+}
+
+void process_color_red(const char *filename) {
+    unsigned char *input_data = NULL;
+    unsigned char *output_data = NULL;
+    int width = 0, height = 0;
+
+    if (read_image_data(filename, &input_data, &width, &height) != 0) {
+        fprintf(stderr, "Erreur de lecture de l'image.\n");
+        return;
+    }
+
+    output_data = malloc(width * height * 3);
+    if (!output_data) {
+        fprintf(stderr, "Erreur d'allocation mémoire.\n");
+        free(input_data);
+        return;
+    }
+
+    keep_red_component(input_data, output_data, width, height);
+
+    write_image_data("image_out.bmp", output_data, width, height);
+
+    free(input_data);
+    free(output_data);
 }

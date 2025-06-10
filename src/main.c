@@ -8,6 +8,7 @@
 #include "features.h"
 #include "utils.h"
 #include "argsparse.h"
+#include "configp.h"
 
 int main(int argc, char **argv) {
   /*To use debug mode: 
@@ -49,9 +50,9 @@ int main(int argc, char **argv) {
 
   } else if (strcmp(configuration.command, "max_pixel") == 0) {
     max_pixel(configuration.filenames[0]);
+    
+  } else if (strcmp(configuration.command, "color_red") == 0) {
+    process_color_red(configuration.filenames[0]);
   }
-
-
-
-  return 0;
+return 0;
 }
