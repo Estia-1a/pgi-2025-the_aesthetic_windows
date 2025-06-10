@@ -50,7 +50,15 @@ int main(int argc, char **argv) {
 
   } else if (strcmp(configuration.command, "max_pixel") == 0) {
     max_pixel(configuration.filenames[0]);
-    
-  } 
-return 0;
+   
+  } else if (strcmp(configuration.command, "min_pixel") == 0) {
+    min_pixel(configuration.filenames[0]);
+  
+  } else if (strcmp(configuration.command, "max_component") == 0) {
+    char component = configuration.arguments[0][0];
+    max_component(configuration.filenames[0], component);
+  }
+
+
+  return 0;
 }
