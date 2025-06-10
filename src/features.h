@@ -28,4 +28,6 @@ void min_component(char* filename, char component);
 
 void color_red(char *filename);
 
+void color_green(char *filename);
+
 #endif
