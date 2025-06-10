@@ -44,8 +44,8 @@ int main(int argc, char **argv) {
     second_line(configuration.filenames[0]);
   
   } else if (strcmp(configuration.command, "print_pixel") == 0) {
-    int x = atoi(argv[5]);
-    int y = atoi(argv[6]);
+    int x = atoi(argv[argc-2]);
+    int y = atoi(argv[argc-1]);
     print_pixel(configuration.filenames[0], x, y);
 
   } else if (strcmp(configuration.command, "max_pixel") == 0) {
@@ -62,7 +62,8 @@ int main(int argc, char **argv) {
     char component = configuration.arguments[0][0];
     min_component(configuration.filenames[0], component);
   
-  }
+  } 
+
 
 
 
