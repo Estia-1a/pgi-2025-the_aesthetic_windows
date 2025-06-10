@@ -330,8 +330,6 @@ void color_gray(char *filename) {
     free_image_data(data);
 }
 
-<<<<<<< HEAD
-=======
 void color_invert(char *filename) {
     int width, height, channel_count;
     unsigned char *data;
@@ -355,4 +353,3 @@ void color_invert(char *filename) {
     int result = write_image_data("image_out.bmp", data, width, height);
     free_image_data(data);
 }
->>>>>>> b3ee5ac58051b59bef129ce3d85e615fdeea711d
