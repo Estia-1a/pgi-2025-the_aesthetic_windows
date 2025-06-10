@@ -1,6 +1,7 @@
 #include <estia-image.h>
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <string.h>
 #include "features.h"
 #include "utils.h"
 
@@ -131,6 +132,17 @@ void max_pixel(char* filename) {
     free_image_data(data);
 }
 
+<<<<<<< HEAD
+void keep_red_component(const unsigned char *input, unsigned char *output, int width, int height) {
+    int num_pixels = width * height;
+    for (int i = 0; i < num_pixels; ++i) {
+        int index = i * 3;
+        output[index] = input[index];       // R
+        output[index + 1] = 0;              // G
+        output[index + 2] = 0;              // B
+    }
+}
+=======
 void min_pixel(char* filename) {
     unsigned char* data;
     int width, height, channel_count;
@@ -196,6 +208,7 @@ void max_component(char* filename, char component) {
     printf("max_component %c (%d, %d): %d\n", component, max_x, max_y, max_value);
     free_image_data(data);
 }
+<<<<<<< HEAD
 
 void min_component(char* filename, char component) {
     unsigned char* data;
@@ -230,3 +243,6 @@ void min_component(char* filename, char component) {
     printf("min_component %c (%d, %d): %d\n", component, min_x, min_y, min_value);
     free_image_data(data);
 }
+=======
+>>>>>>> aebae97103631d1a7e7fe78a674d2a83f9c9a063
+>>>>>>> cf2a4234bbe22ae6b822f74aca64c0fa174c603c
