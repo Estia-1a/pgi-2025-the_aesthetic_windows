@@ -50,13 +50,27 @@ int main(int argc, char **argv) {
 
   } else if (strcmp(configuration.command, "max_pixel") == 0) {
     max_pixel(configuration.filenames[0]);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+   
+=======
+<<<<<<< HEAD
+>>>>>>> 9b50b115683aa1dce62dc360bf9c5c6c8d3b524f
   
+>>>>>>> 96568933e2e475dbe83a4f3e5e653a3285e09b15
   } else if (strcmp(configuration.command, "min_pixel") == 0) {
     min_pixel(configuration.filenames[0]);
   
   } else if (strcmp(configuration.command, "max_component") == 0) {
     char component = configuration.arguments[0][0];
     max_component(configuration.filenames[0], component);
+<<<<<<< HEAD
+  }
+
+
+  return 0;
+=======
   
   } else if (strcmp(configuration.command, "min_component") == 0) {
     char component = configuration.arguments[0][0];
@@ -70,4 +84,9 @@ int main(int argc, char **argv) {
 
 
 return 0;
+<<<<<<< HEAD
+=======
+>>>>>>> cf2a4234bbe22ae6b822f74aca64c0fa174c603c
+>>>>>>> 96568933e2e475dbe83a4f3e5e653a3285e09b15
+>>>>>>> 9b50b115683aa1dce62dc360bf9c5c6c8d3b524f
 }
