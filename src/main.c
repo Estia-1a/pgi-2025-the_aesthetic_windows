@@ -79,7 +79,8 @@ int main(int argc, char **argv) {
   
   } else if (strcmp(configuration.command, "color_invert") == 0) {
     color_invert(configuration.filenames[0]);
-  
+  } else if (strcmp(configuration.command, "color_gray_luminance") == 0) {
+    color_gray_luminance(configuration.filenames[0]);
   } else if (strcmp(configuration.command, "scale_crop") == 0) {
     int center_x = atoi(argv[6]);
     int center_y = atoi(argv[7]);
@@ -95,11 +96,15 @@ int main(int argc, char **argv) {
       float scale_factor = atof(argv[argc - 1]);
       scale_nearest(configuration.filenames[0], scale_factor);
   }
+<<<<<<< HEAD
 
 
 
 
   
 return 0;
+=======
+  return 0;
+>>>>>>> be3435a691687c3a9615e70dbe01f9a16c582599
 
 }
