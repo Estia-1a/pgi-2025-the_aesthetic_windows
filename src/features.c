@@ -383,3 +383,46 @@ void color_gray_luminance(char* filename) {
     int result = write_image_data("image_out.bmp", data, width, height);
     free_image_data(data);
 }
+
+void scale_crop(char* filename, int center_x, int center_y, int crop_width, int crop_height) {
+    int width, height, channel_count;
+    unsigned char *data;
+
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    int start_x = center_x - crop_width / 2;
+    int start_y = center_y - crop_height / 2;
+
+    if (start_x < 0) start_x = 0;
+    if (start_y < 0) start_y = 0;
+    if (start_x + crop_width > width) crop_width = width - start_x;
+    if (start_y + crop_height > height) crop_height = height - start_y;
+
+    unsigned char *cropped = malloc(crop_width * crop_height * channel_count);
+    if (cropped == NULL) {
+        printf("Erreur d'allocation mémoire\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < crop_height; y++) {
+        for (int x = 0; x < crop_width; x++) {
+            for (int c = 0; c < channel_count; c++) {
+                int src_index = ((y + start_y) * width + (x + start_x)) * channel_count + c;
+                int dst_index = (y * crop_width + x) * channel_count + c;
+                cropped[dst_index] = data[src_index];
+            }
+        }
+    }
+
+    char output_filename[256];
+    snprintf(output_filename, sizeof(output_filename), "image_out.bmp");
+
+    write_image_data(output_filename, cropped, crop_width, crop_height);
+
+    free(data);
+    free(cropped);
+}
