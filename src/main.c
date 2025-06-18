@@ -109,7 +109,11 @@ int main(int argc, char **argv) {
   
   } else if (strcmp(configuration.command, "mirror_horizontal") == 0) {
     mirror_horizontal(configuration.filenames[0]);
+  
+  }else if (strcmp(configuration.command, "mirror_vertical") == 0) {
+    mirror_vertical(configuration.filenames[0]);
   }
+
 
 
 

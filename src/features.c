@@ -572,3 +572,39 @@ void mirror_horizontal(char* filename) {
     free(data);
     free(mirrored);
 }
+
+void mirror_vertical(char* filename) {
+    int width, height, channels;
+    unsigned char *data;
+
+    // Lire l'image
+    if (read_image_data(filename, &data, &width, &height, &channels) == 0) {
+        printf("Impossible de lire l’image : %s\n", filename);
+        return;
+    }
+
+    // Allouer une nouvelle image miroir
+    unsigned char *result = malloc(width * height * channels);
+    if (result == NULL) {
+        printf("Erreur mémoire\n");
+        free(data);
+        return;
+    }
+
+    // Copier les lignes de bas en haut (effet miroir vertical)
+    for (int y = 0; y < height; y++) {
+        int src_y = height - 1 - y;
+        for (int x = 0; x < width; x++) {
+            for (int c = 0; c < channels; c++) {
+                int src_index = (src_y * width + x) * channels + c;
+                int dst_index = (y * width + x) * channels + c;
+                result[dst_index] = data[src_index];
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", result, width, height);
+
+    free(data);
+    free(result);
+}
