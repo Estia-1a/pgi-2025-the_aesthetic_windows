@@ -87,8 +87,14 @@ int main(int argc, char **argv) {
     int crop_height = atoi(argv[9]);
     scale_crop(configuration.filenames[0], center_x, center_y, crop_width, crop_height);
   
+  } else if (strcmp(configuration.command, "scale_nearest") == 0) {
+      if (argc < 5) {
+          printf("Erreur: paramètre manquant pour scale_nearest\n");
+          return 1;
+      }
+      float scale_factor = atof(argv[argc - 1]);
+      scale_nearest(configuration.filenames[0], scale_factor);
   }
-  
 
 
 
