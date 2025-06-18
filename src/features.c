@@ -535,9 +535,9 @@ void mirror_total(char* filename) {
     }
 
     for (int y = 0; y < height; y++) {
-        int inv_y = height - 1 - y; // ligne inversée
+        int inv_y = height - 1 - y; 
         for (int x = 0; x < width; x++) {
-            int inv_x = width - 1 - x; // colonne inversée
+            int inv_x = width - 1 - x; 
             for (int c = 0; c < channels; c++) {
                 int src_index = (inv_y * width + inv_x) * channels + c;
                 int dst_index = (y * width + x) * channels + c;
@@ -550,4 +550,43 @@ void mirror_total(char* filename) {
 
     free(data);
     free(mirrored);
+}
+
+void color_desaturate(char* filename) {
+    int width, height, channel_count;
+    unsigned char *data;
+
+   
+    read_image_data(filename, &data, &width, &height, &channel_count);
+
+    
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+           
+            pixelRGB *pixel = get_pixel(data, width, height, channel_count, x, y);
+            
+            
+            unsigned char min_val = pixel->R;
+            if (pixel->G < min_val) min_val = pixel->G;
+            if (pixel->B < min_val) min_val = pixel->B;
+            
+            unsigned char max_val = pixel->R;
+            if (pixel->G > max_val) max_val = pixel->G;
+            if (pixel->B > max_val) max_val = pixel->B;
+            
+            unsigned char new_val = (min_val + max_val) / 2;
+            
+            
+            pixel->R = new_val;
+            pixel->G = new_val;
+            pixel->B = new_val;
+            
+            
+            set_pixel(data, width, channel_count, x, y, *pixel);
+        }
+    }
+
+    
+    int result = write_image_data("image_out.bmp", data, width, height);
+    free_image_data(data);
 }

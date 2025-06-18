@@ -48,5 +48,6 @@ void mirror_vertical(char* filename);
 
 void mirror_total(char* filename);
 
+void color_desaturate(char* filename);
 
 #endif
