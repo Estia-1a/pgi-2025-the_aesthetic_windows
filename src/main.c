@@ -106,7 +106,11 @@ int main(int argc, char **argv) {
   
   } else if (strcmp(configuration.command, "rotate_acw") == 0) {
     rotate_acw(configuration.filenames[0]);
+  
+  } else if (strcmp(configuration.command, "mirror_horizontal") == 0) {
+    mirror_horizontal(configuration.filenames[0]);
   }
+
 
 
 

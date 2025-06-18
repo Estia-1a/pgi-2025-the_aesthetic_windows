@@ -540,3 +540,35 @@ void rotate_acw(char* filename) {
     free(data);
     free(rotated);
 }
+
+void mirror_horizontal(char* filename) {
+    int width, height, channel_count;
+    unsigned char *data;
+
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    unsigned char *mirrored = malloc(width * height * channel_count);
+    if (!mirrored) {
+        printf("Erreur d'allocation mémoire\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int c = 0; c < channel_count; c++) {
+                int src_index = (y * width + x) * channel_count + c;
+                int dst_index = (y * width + (width - 1 - x)) * channel_count + c;
+                mirrored[dst_index] = data[src_index];
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", mirrored, width, height);
+
+    free(data);
+    free(mirrored);
+}
