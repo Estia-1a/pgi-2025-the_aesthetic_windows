@@ -58,7 +58,11 @@ void tenth_pixel (char* filename) {
     int r = data[index];
     int g = data[index + 1];
     int b = data[index + 2];
-    printf("tenth_pixel: %d, %d, %d\n", r, g, b);
+    
+    printf("Tenth Pixel Red : %d,0,0\n", r);
+    printf("Tenth Pixel Green : 0,%d,0\n", g);
+    printf("Tenth Pixel Blue : 0,0,%d\n", b);
+    
     free_image_data(data); 
 }
 
@@ -589,4 +593,156 @@ void color_desaturate(char* filename) {
     
     int result = write_image_data("image_out.bmp", data, width, height);
     free_image_data(data);
+}
+
+
+void scale_nearest(char* filename, float facteur) {
+    unsigned char* image_originale;
+    int largeur, hauteur, canaux;
+
+    if (read_image_data(filename, &image_originale, &largeur, &hauteur, &canaux) == 0) {
+        printf("Erreur de lecture du fichier : %s\n", filename);
+        return;
+    }
+
+    int nouvelle_largeur = largeur * facteur;
+    int nouvelle_hauteur = hauteur * facteur;
+
+    if (nouvelle_largeur <= 0 || nouvelle_hauteur <= 0) {
+        printf("Erreur : facteur d echelle invalide (%.2f)\n", facteur);
+        free(image_originale);
+        return;
+    }
+
+    unsigned char* image_redimensionnee = malloc(nouvelle_largeur * nouvelle_hauteur * canaux);
+    if (image_redimensionnee == NULL) {
+        printf("Erreur d'allocation mémoire\n");
+        free(image_originale);
+        return;
+    }
+
+    for (int y = 0; y < nouvelle_hauteur; y++) {
+        for (int x = 0; x < nouvelle_largeur; x++) {
+
+            int ancien_x = x / facteur;
+            int ancien_y = y / facteur;
+
+            int index_original = (ancien_y * largeur + ancien_x) * canaux;
+            int index_nouveau = (y * nouvelle_largeur + x) * canaux;
+
+            for (int c = 0; c < canaux; c++) {
+                image_redimensionnee[index_nouveau + c] = image_originale[index_original + c];
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", image_redimensionnee, nouvelle_largeur, nouvelle_hauteur);
+
+    free(image_originale);
+    free(image_redimensionnee);
+}
+
+void scale_bilinear(char* filename, float scale_factor) {
+    int width, height, channel_count;
+    unsigned char* data;
+
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    int new_width = (int)(width * scale_factor);
+    int new_height = (int)(height * scale_factor);
+
+    if (new_width <= 0 || new_height <= 0) {
+        printf("Erreur : facteur d echelle invalide (%.2f)\n", scale_factor);
+        free(data);
+        return;
+    }
+
+    unsigned char* result = malloc(new_width * new_height * channel_count);
+    if (result == NULL) {
+        printf("Erreur d'allocation mémoire\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < new_height; y++) {
+        float gy = ((float)y / (float)(new_height)) * (height - 1);
+        int y0 = (int)gy;
+        int y1 = y0 + 1;
+        if (y1 >= height) y1 = height - 1;
+        float dy = gy - y0;
+
+        for (int x = 0; x < new_width; x++) {
+            float gx = ((float)x / (float)(new_width)) * (width - 1);
+            int x0 = (int)gx;
+            int x1 = x0 + 1;
+            if (x1 >= width) x1 = width - 1;
+            float dx = gx - x0;
+
+            for (int c = 0; c < channel_count; c++) {
+                int i00 = (y0 * width + x0) * channel_count + c;
+                int i01 = (y0 * width + x1) * channel_count + c;
+                int i10 = (y1 * width + x0) * channel_count + c;
+                int i11 = (y1 * width + x1) * channel_count + c;
+
+                float val = (1 - dx) * (1 - dy) * data[i00] +
+                            dx * (1 - dy) * data[i01] +
+                            (1 - dx) * dy * data[i10] +
+                            dx * dy * data[i11];
+
+                result[(y * new_width + x) * channel_count + c] = (unsigned char)val;
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", result, new_width, new_height);
+
+    printf("Image redimensionnee par interpolation bilineaire : %dx%d -> %dx%d (facteur: %.2f)\n",
+           width, height, new_width, new_height, scale_factor);
+
+    free(data);
+    free(result);
+}
+
+
+void scale_crop(char* filename, int center_x, int center_y, int crop_width, int crop_height) {
+    int width, height, channel_count;
+    unsigned char *data;
+
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    int start_x = center_x - crop_width / 2;
+    int start_y = center_y - crop_height / 2;
+
+    if (start_x < 0) start_x = 0;
+    if (start_y < 0) start_y = 0;
+    if (start_x + crop_width > width) crop_width = width - start_x;
+    if (start_y + crop_height > height) crop_height = height - start_y;
+
+    unsigned char *cropped = malloc(crop_width * crop_height * channel_count);
+    if (cropped == NULL) {
+        printf("Erreur d'allocation mémoire\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < crop_height; y++) {
+        for (int x = 0; x < crop_width; x++) {
+            for (int c = 0; c < channel_count; c++) {
+                int src_index = ((y + start_y) * width + (x + start_x)) * channel_count + c;
+                int dst_index = (y * crop_width + x) * channel_count + c;
+                cropped[dst_index] = data[src_index];
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", cropped, crop_width, crop_height);
+
+    free(data);
+    free(cropped);
 }

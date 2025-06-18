@@ -97,9 +97,35 @@ int main(int argc, char **argv) {
   
   } else if (strcmp(configuration.command, "mirror_total") == 0) {
     mirror_total(configuration.filenames[0]);
+  
   } else if (strcmp(configuration.command, "color_desaturate") == 0) {
     color_desaturate(configuration.filenames[0]);
+  
+  } else if (strcmp(configuration.command, "scale_nearest") == 0) {
+    float scale_factor = atof(argv[5]);
+    scale_nearest(configuration.filenames[0], scale_factor);
+  
+  } else if (strcmp(configuration.command, "scale_bilinear") == 0) {
+    float factor = atof(argv[5]);
+    scale_bilinear(configuration.filenames[0], factor);
+  
+  } else if (strcmp(configuration.command, "scale_crop") == 0) {
+    if (argc < 8) {
+        printf("Erreur : paramètres manquants pour scale_crop.\n");
+        return 1;
+    }
+    int cx = atoi(argv[4]);
+    int cy = atoi(argv[5]);
+    int w = atoi(argv[6]);
+    int h = atoi(argv[7]);
+    scale_crop(configuration.filenames[0], cx, cy, w, h);
   }
+
+
+
+ 
+
+
 
 
 
