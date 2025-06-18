@@ -402,7 +402,7 @@ void scale_crop(char* filename, int center_x, int center_y, int crop_width, int 
     if (start_y + crop_height > height) crop_height = height - start_y;
 
     unsigned char *cropped = malloc(crop_width * crop_height * channel_count);
-    if (cropped == NULL) {
+    if (!cropped) {
         printf("Erreur d'allocation mémoire\n");
         free(data);
         return;
@@ -418,11 +418,125 @@ void scale_crop(char* filename, int center_x, int center_y, int crop_width, int 
         }
     }
 
-    char output_filename[256];
-    snprintf(output_filename, sizeof(output_filename), "image_out.bmp");
-
-    write_image_data(output_filename, cropped, crop_width, crop_height);
-
+    write_image_data("image_out.bmp", cropped, crop_width, crop_height);
     free(data);
     free(cropped);
+}
+
+
+void scale_nearest(char* filename, float scale_factor) {
+    int width, height, channel_count;
+    unsigned char *data;
+    
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+    
+    int new_width = (int)(width * scale_factor);
+    int new_height = (int)(height * scale_factor);
+    
+    if (new_width <= 0 || new_height <= 0) {
+        printf("Erreur : facteur d'échelle invalide (%.2f)\n", scale_factor);
+        free(data);
+        return;
+    }
+    
+    unsigned char *scaled_image = malloc(new_width * new_height * channel_count);
+    if (scaled_image == NULL) {
+        printf("Erreur d'allocation mémoire\n");
+        free(data);
+        return;
+    }
+    
+    for (int y = 0; y < new_height; y++) {
+        for (int x = 0; x < new_width; x++) {
+            int src_x = (int)(x / scale_factor);
+            int src_y = (int)(y / scale_factor);
+            
+            if (src_x >= width) src_x = width - 1;
+            if (src_y >= height) src_y = height - 1;
+            
+            for (int c = 0; c < channel_count; c++) {
+                int src_index = (src_y * width + src_x) * channel_count + c;
+                int dst_index = (y * new_width + x) * channel_count + c;
+                scaled_image[dst_index] = data[src_index];
+            }
+        }
+    }
+    
+    write_image_data("image_out.bmp", scaled_image, new_width, new_height);
+
+    free(data);
+    free(scaled_image);
+}
+
+
+void rotate_cw(char* filename) {
+    int width, height, channel_count;
+    unsigned char *data;
+
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    int new_width = height;
+    int new_height = width;
+    unsigned char *rotated = malloc(new_width * new_height * channel_count);
+    if (!rotated) {
+        printf("Erreur d'allocation mémoire\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int c = 0; c < channel_count; c++) {
+                int src_index = (y * width + x) * channel_count + c;
+                int dst_index = (x * new_width + (new_width - 1 - y)) * channel_count + c;
+                rotated[dst_index] = data[src_index];
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", rotated, new_width, new_height);
+
+    free(data);
+    free(rotated);
+}
+
+
+void rotate_acw(char* filename) {
+    int width, height, channel_count;
+    unsigned char *data;
+
+    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    int new_width = height;
+    int new_height = width;
+    unsigned char *rotated = malloc(new_width * new_height * channel_count);
+    if (!rotated) {
+        printf("Erreur d'allocation mémoire\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int c = 0; c < channel_count; c++) {
+                int src_index = (y * width + x) * channel_count + c;
+                int dst_index = ((new_height - 1 - x) * new_width + y) * channel_count + c;
+                rotated[dst_index] = data[src_index];
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", rotated, new_width, new_height);
+
+    free(data);
+    free(rotated);
 }
