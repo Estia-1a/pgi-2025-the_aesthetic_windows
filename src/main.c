@@ -79,28 +79,10 @@ int main(int argc, char **argv) {
   
   } else if (strcmp(configuration.command, "color_invert") == 0) {
     color_invert(configuration.filenames[0]);
+  
   } else if (strcmp(configuration.command, "color_gray_luminance") == 0) {
     color_gray_luminance(configuration.filenames[0]);
 
-  } else if (strcmp(configuration.command, "scale_crop") == 0) {
-    if (argc < 9) {
-        printf("Usage: -c scale_crop center_x center_y width height\n");
-        return 1;
-    }
-    int center_x = atoi(argv[6]);
-    int center_y = atoi(argv[7]);
-    int crop_width = atoi(argv[8]);
-    int crop_height = atoi(argv[9]);
-    scale_crop(configuration.filenames[0], center_x, center_y, crop_width, crop_height);
-  
-  } else if (strcmp(configuration.command, "scale_nearest") == 0) {
-      if (argc < 5) {
-          printf("Erreur: paramètre manquant pour scale_nearest\n");
-          return 1;
-      }
-      float scale_factor = atof(argv[argc - 1]);
-      scale_nearest(configuration.filenames[0], scale_factor);
-  
   } else if (strcmp(configuration.command, "rotate_cw") == 0) {
     rotate_cw(configuration.filenames[0]);
   
@@ -110,9 +92,13 @@ int main(int argc, char **argv) {
   } else if (strcmp(configuration.command, "mirror_horizontal") == 0) {
     mirror_horizontal(configuration.filenames[0]);
   
-  }else if (strcmp(configuration.command, "mirror_vertical") == 0) {
+  } else if (strcmp(configuration.command, "mirror_vertical") == 0) {
     mirror_vertical(configuration.filenames[0]);
+  
+  } else if (strcmp(configuration.command, "mirror_total") == 0) {
+    mirror_total(configuration.filenames[0]);
   }
+
 
 
 

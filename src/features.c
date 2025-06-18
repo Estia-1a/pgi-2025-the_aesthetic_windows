@@ -384,94 +384,6 @@ void color_gray_luminance(char* filename) {
     free_image_data(data);
 }
 
-void scale_crop(char* filename, int center_x, int center_y, int crop_width, int crop_height) {
-    int width, height, channel_count;
-    unsigned char *data;
-
-    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
-        printf("Erreur avec le fichier : %s\n", filename);
-        return;
-    }
-
-    int start_x = center_x - crop_width / 2;
-    int start_y = center_y - crop_height / 2;
-
-    if (start_x < 0) start_x = 0;
-    if (start_y < 0) start_y = 0;
-    if (start_x + crop_width > width) crop_width = width - start_x;
-    if (start_y + crop_height > height) crop_height = height - start_y;
-
-    unsigned char *cropped = malloc(crop_width * crop_height * channel_count);
-    if (!cropped) {
-        printf("Erreur d'allocation mémoire\n");
-        free(data);
-        return;
-    }
-
-    for (int y = 0; y < crop_height; y++) {
-        for (int x = 0; x < crop_width; x++) {
-            for (int c = 0; c < channel_count; c++) {
-                int src_index = ((y + start_y) * width + (x + start_x)) * channel_count + c;
-                int dst_index = (y * crop_width + x) * channel_count + c;
-                cropped[dst_index] = data[src_index];
-            }
-        }
-    }
-
-    write_image_data("image_out.bmp", cropped, crop_width, crop_height);
-    free(data);
-    free(cropped);
-}
-
-
-void scale_nearest(char* filename, float scale_factor) {
-    int width, height, channel_count;
-    unsigned char *data;
-    
-    if (read_image_data(filename, &data, &width, &height, &channel_count) == 0) {
-        printf("Erreur avec le fichier : %s\n", filename);
-        return;
-    }
-    
-    int new_width = (int)(width * scale_factor);
-    int new_height = (int)(height * scale_factor);
-    
-    if (new_width <= 0 || new_height <= 0) {
-        printf("Erreur : facteur d'échelle invalide (%.2f)\n", scale_factor);
-        free(data);
-        return;
-    }
-    
-    unsigned char *scaled_image = malloc(new_width * new_height * channel_count);
-    if (scaled_image == NULL) {
-        printf("Erreur d'allocation mémoire\n");
-        free(data);
-        return;
-    }
-    
-    for (int y = 0; y < new_height; y++) {
-        for (int x = 0; x < new_width; x++) {
-            int src_x = (int)(x / scale_factor);
-            int src_y = (int)(y / scale_factor);
-            
-            if (src_x >= width) src_x = width - 1;
-            if (src_y >= height) src_y = height - 1;
-            
-            for (int c = 0; c < channel_count; c++) {
-                int src_index = (src_y * width + src_x) * channel_count + c;
-                int dst_index = (y * new_width + x) * channel_count + c;
-                scaled_image[dst_index] = data[src_index];
-            }
-        }
-    }
-    
-    write_image_data("image_out.bmp", scaled_image, new_width, new_height);
-
-    free(data);
-    free(scaled_image);
-}
-
-
 void rotate_cw(char* filename) {
     int width, height, channel_count;
     unsigned char *data;
@@ -577,13 +489,11 @@ void mirror_vertical(char* filename) {
     int width, height, channels;
     unsigned char *data;
 
-    // Lire l'image
     if (read_image_data(filename, &data, &width, &height, &channels) == 0) {
-        printf("Impossible de lire l’image : %s\n", filename);
+        printf("Erreur avec le fichier : %s\n", filename);
         return;
     }
 
-    // Allouer une nouvelle image miroir
     unsigned char *result = malloc(width * height * channels);
     if (result == NULL) {
         printf("Erreur mémoire\n");
@@ -591,7 +501,6 @@ void mirror_vertical(char* filename) {
         return;
     }
 
-    // Copier les lignes de bas en haut (effet miroir vertical)
     for (int y = 0; y < height; y++) {
         int src_y = height - 1 - y;
         for (int x = 0; x < width; x++) {
@@ -607,4 +516,38 @@ void mirror_vertical(char* filename) {
 
     free(data);
     free(result);
+}
+
+void mirror_total(char* filename) {
+    int width, height, channels;
+    unsigned char *data;
+
+    if (read_image_data(filename, &data, &width, &height, &channels) == 0) {
+        printf("Erreur avec le fichier : %s\n", filename);
+        return;
+    }
+
+    unsigned char *mirrored = malloc(width * height * channels);
+    if (mirrored == NULL) {
+        printf("Erreur d’allocation mémoire\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < height; y++) {
+        int inv_y = height - 1 - y; // ligne inversée
+        for (int x = 0; x < width; x++) {
+            int inv_x = width - 1 - x; // colonne inversée
+            for (int c = 0; c < channels; c++) {
+                int src_index = (inv_y * width + inv_x) * channels + c;
+                int dst_index = (y * width + x) * channels + c;
+                mirrored[dst_index] = data[src_index];
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", mirrored, width, height);
+
+    free(data);
+    free(mirrored);
 }
