@@ -38,10 +38,10 @@ void color_invert(char* filename);
 
 void scale_crop(char* filename, int center_x, int center_y, int crop_width, int crop_height);
 
-<<<<<<< HEAD
 void scale_nearest(char* filename, float scale_factor);
-=======
 void color_gray_luminance(char *filename);
->>>>>>> be3435a691687c3a9615e70dbe01f9a16c582599
+
+void rotate_cw(char* filename);
+
 
 #endif

@@ -81,7 +81,12 @@ int main(int argc, char **argv) {
     color_invert(configuration.filenames[0]);
   } else if (strcmp(configuration.command, "color_gray_luminance") == 0) {
     color_gray_luminance(configuration.filenames[0]);
+
   } else if (strcmp(configuration.command, "scale_crop") == 0) {
+    if (argc < 9) {
+        printf("Usage: -c scale_crop center_x center_y width height\n");
+        return 1;
+    }
     int center_x = atoi(argv[6]);
     int center_y = atoi(argv[7]);
     int crop_width = atoi(argv[8]);
@@ -95,16 +100,16 @@ int main(int argc, char **argv) {
       }
       float scale_factor = atof(argv[argc - 1]);
       scale_nearest(configuration.filenames[0], scale_factor);
+  
+  } else if (strcmp(configuration.command, "rotate_cw") == 0) {
+    rotate_cw(configuration.filenames[0]);
   }
-<<<<<<< HEAD
 
 
 
 
   
 return 0;
-=======
-  return 0;
->>>>>>> be3435a691687c3a9615e70dbe01f9a16c582599
+
 
 }
